@@ -1,0 +1,43 @@
+/**
+ * Document: Vector Dot Product
+ * MaxFile name: MovingAverageSimple
+ * Summary:
+ * 	Manager for the dot product kernel design.
+ *  All IO is between the CPU and the DFE.
+ */
+package movingaveragesimple;
+
+import com.maxeler.maxcompiler.v2.build.EngineParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.CPUTypes;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.EngineInterface;
+import com.maxeler.maxcompiler.v2.managers.engine_interfaces.InterfaceParam;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager;
+import com.maxeler.maxcompiler.v2.managers.standard.Manager.IOType;
+
+class MovingAverageSimpleManager 
+{
+    private static final String s_kernelName = "MovingAverageSimpleKernel";
+    private static final int streamSize = 4;
+	public static void main(String[] args) {
+	    Manager manager = new Manager(new EngineParameters(args));
+		Kernel kernel   = new MovingAverageSimpleKernel(manager.makeKernelParameters(s_kernelName), streamSize);
+		manager.setKernel(kernel);
+		manager.setIO(IOType.ALL_CPU);
+		manager.createSLiCinterface(interfaceDefault());
+		manager.build();
+	}
+
+	private static EngineInterface interfaceDefault()
+	{
+		EngineInterface z = new EngineInterface();
+		CPUTypes type = CPUTypes.INT32;
+		int size = type.sizeInBytes();
+		InterfaceParam  N    = z.addParam("N", CPUTypes.INT);
+		z.setTicks(s_kernelName, N);
+		z.setStream("x",   type, streamSize * N * size);
+		z.setStream("y",   type, streamSize * N * size);
+		z.setStream("s", type, N * size);
+        return z;
+	}
+}

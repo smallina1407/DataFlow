@@ -1,0 +1,22 @@
+package debugwithstreamstatus;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
+
+class DebugWithStreamStatusKernel extends Kernel 
+{
+
+	private static final DFEType type = dfeInt(32);
+
+	protected DebugWithStreamStatusKernel(KernelParameters parameters) 
+	{
+		super(parameters);
+
+		DFEVar x = io.input("x", type);
+
+        io.output("y", x, type);
+	}
+
+}

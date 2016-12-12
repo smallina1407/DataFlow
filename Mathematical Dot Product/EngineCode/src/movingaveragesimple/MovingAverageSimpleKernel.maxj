@@ -1,0 +1,29 @@
+/**
+ * Document: Vector Dot Product
+ * MaxFile name: MovingAverageSimple
+ * Summary:
+ * 	Computes a dot product over the input stream
+ */
+package movingaveragesimple;
+
+import com.maxeler.maxcompiler.v2.kernelcompiler.Kernel;
+import com.maxeler.maxcompiler.v2.kernelcompiler.KernelParameters;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEType;
+import com.maxeler.maxcompiler.v2.kernelcompiler.types.base.DFEVar;
+
+class MovingAverageSimpleKernel extends Kernel
+{
+    private static final DFEType type = dfeInt(32);
+
+	MovingAverageSimpleKernel(KernelParameters parameters, int streamSize)
+	{
+		super(parameters);
+
+		DFEVar x = io.input("x", type);
+		DFEVar y = io.input("y", type);
+
+		DFEVar sum = x * y;
+
+        io.output("s", sum, type);
+	}
+}
